@@ -8,30 +8,59 @@ df1 = pd.read_csv('https://raw.githubusercontent.com/iantonios/dsc205/main/CT-to
 
 st.title('Affordable Housing in Hartford Compared to Connectict Nolan Tomaszycki & Estela Baka')
 
-# Filter to just 2011 and 2020
 df_filtered = df[df['Year'].isin([2011, 2020])]
 
-# Pivot to get towns as rows, years as columns
 df_pivot = df_filtered.pivot(index='Town', columns='Year', values='Percent Affordable')
 
-# Drop towns missing either year
 df_pivot = df_pivot.dropna()
 
-# Calculate change from 2011 to 2020
 df_pivot['Change'] = df_pivot[2020] - df_pivot[2011]
 
-# Sort towns by change
 df_sorted = df_pivot.sort_values(by='Change')
 
-# Set color: red for negative, green for positive
 colors = df_sorted['Change'].apply(lambda x: 'red' if x < 0 else 'green')
 
-# Plot
+
 fig, ax = plt.subplots(figsize=(8, 10))
 ax.barh(df_sorted.index, df_sorted['Change'], color=colors)
 ax.set_xlabel("Percentage Change in Affordability")
 ax.set_ylabel("Towns")
 ax.set_title("Towns with Largest Increase/Decrease in Housing Affordability (2011-2020)")
+plt.tight_layout()
+
+st.pyplot(fig)
+
+
+
+cities = ['Waterbury', 'Stamford', 'Hartford', 'New Haven', 'Bridgeport']
+years = [2014, 2018, 2022]
+
+df_filtered = df[df['Town'].isin(cities) & df['Year'].isin(years)]
+
+
+df_pivot = df_filtered.pivot(index='Town', columns='Year', values='Percent Affordable')
+
+
+df_pivot = df_pivot.loc[cities]
+
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+bar_width = 0.25
+x = range(len(df_pivot))
+
+
+for i, year in enumerate(years):
+    ax.bar([p + i*bar_width for p in x], df_pivot[year], width=bar_width, label=str(year))
+
+
+ax.set_xticks([p + bar_width for p in x])
+ax.set_xticklabels(df_pivot.index, rotation=45)
+ax.set_ylabel("Housing Units")
+ax.set_xlabel("Town")
+ax.set_title("Percentage of Affordable Housing Units by City in 2014, 2018, and 2022")
+ax.legend(title="Year")
+
 plt.tight_layout()
 
 # Show in Streamlit
