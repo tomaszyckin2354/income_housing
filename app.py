@@ -65,3 +65,26 @@ plt.tight_layout()
 
 # Show in Streamlit
 st.pyplot(fig)
+
+
+# Filter for Hartford
+hartford = df[df['Town'] == 'Hartford'].sort_values('Year')
+
+# Calculate state average per year
+state_avg = df.groupby('Year')['Percent Affordable'].mean().reset_index()
+
+# Plot
+fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.plot(hartford['Year'], hartford['Percent Affordable'], color='red', label='Hartford')
+ax.plot(state_avg['Year'], state_avg['Percent Affordable'], color='skyblue', label='State Average')
+
+# Labels and legend
+ax.set_title("Percentage of Affordable Housing by Year")
+ax.set_xlabel("Year")
+ax.set_ylabel("Percent Affordable")
+ax.set_ylim(0, 45)
+ax.legend()
+
+# Show in Streamlit
+st.pyplot(fig)
