@@ -21,7 +21,7 @@ df_sorted = df_pivot.sort_values(by='Change')
 colors = df_sorted['Change'].apply(lambda x: 'red' if x < 0 else 'green')
 
 
-fig, ax = plt.subplots(figsize=(8, 10))
+fig, ax = plt.subplots(figsize=(10, 8))
 ax.barh(df_sorted.index, df_sorted['Change'], color=colors)
 ax.set_xlabel("Percentage Change in Affordability")
 ax.set_ylabel("Towns")
