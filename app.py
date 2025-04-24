@@ -88,3 +88,38 @@ ax.legend()
 
 
 st.pyplot(fig)
+
+
+
+
+df_filtered = df[df['Year'].isin([2011, 2020])]
+
+
+df_pivot = df_filtered.pivot(index='Town', columns='Year', values='Percent Affordable')
+
+
+df_pivot = df_pivot.dropna()
+
+
+df_pivot['Change'] = df_pivot[2020] - df_pivot[2011]
+
+
+top_5 = df_pivot.sort_values(by='Change', ascending=False).head(5)
+bottom_5 = df_pivot.sort_values(by='Change').head(5)
+
+
+df_combined = pd.concat([bottom_5, top_5])
+
+
+colors = df_combined['Change'].apply(lambda x: 'red' if x < 0 else 'green')
+
+
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.barh(df_combined.index, df_combined['Change'], color=colors)
+ax.set_xlabel("Percentage Change in Affordability")
+ax.set_ylabel("Towns")
+ax.set_title("Top 5 and Bottom 5 Towns with Largest Increase/Decrease in Housing Affordability (2011-2020)")
+plt.tight_layout()
+
+
+st.pyplot(fig)
