@@ -123,3 +123,23 @@ plt.tight_layout()
 
 
 st.pyplot(fig)
+
+# Filter for Hartford
+hartford_df = df[df['Town'] == 'Hartford']
+
+# Plot setup
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Plot histograms for each income metric
+ax.hist(hartford_df['Per capita income'], bins=10, alpha=0.7, label='Per capita income', color='skyblue')
+ax.hist(hartford_df['Median household income'], bins=10, alpha=0.7, label='Median household income', color='orange')
+ax.hist(hartford_df['Median family income'], bins=10, alpha=0.7, label='Median family income', color='green')
+
+# Labels, legend, and title
+ax.set_title("Income Metrics Distribution for Hartford")
+ax.set_xlabel("Income ($)")
+ax.set_ylabel("Frequency")
+ax.legend(title="Income Metrics")
+
+# Display in Streamlit
+st.pyplot(fig)
