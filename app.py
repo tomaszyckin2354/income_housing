@@ -125,7 +125,7 @@ plt.tight_layout()
 st.pyplot(fig)
 
 # Filter for Hartford
-hartford_df = df1[df1['Town'] == 'Hartford']
+hartford_df = df1[df1['Place'] == 'Hartford']
 
 # Plot setup
 fig, ax = plt.subplots(figsize=(8, 5))
